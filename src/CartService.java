@@ -33,5 +33,25 @@ public class CartService {
         cartsHM.remove(cartID);
         return true;
     }
-
+    public String getCartInfo(BigInteger cartID){
+        if(!this.existCart(cartID)){
+            return "This cart does not exist";
+        }
+        Cart cart = cartsHM.get(cartID);
+        if(cart.isEmpty()){
+            return "This cart is empty";
+        }
+        ArrayList<Product> products = cart.getProducts();
+        String all="List of products\n\n";
+        for (Product product : products) {
+            int quantity = product.getQuantity();
+            String productDesc=product.getDescription();
+            String s=String.format("""
+                        %s
+                           Quantity: %d
+                    """, productDesc, quantity);
+            all+=s;
+        }
+        return all;
+    }
 }
