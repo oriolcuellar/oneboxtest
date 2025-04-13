@@ -1,4 +1,4 @@
-package main.java;
+package com.onebox.core;
 
 import java.math.BigInteger;
 import java.nio.ByteBuffer;

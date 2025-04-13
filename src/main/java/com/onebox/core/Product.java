@@ -1,11 +1,11 @@
-package main.java;
+package com.onebox.core;
 
 import java.math.BigInteger;
 
 
 public class Product {
-    private BigInteger id;
-    private String description;
+    private final BigInteger id;
+    private final String description;
     private int quantity;
 
     public Product(String description, int quantity){

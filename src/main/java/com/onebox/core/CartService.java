@@ -1,4 +1,4 @@
-package main.java;
+package com.onebox.core;
 
 import java.math.BigInteger;
 import java.time.Instant;
@@ -10,13 +10,12 @@ import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
 
 
-
 public class CartService {
-    private ConcurrentHashMap <BigInteger, Cart> cartsHM = new ConcurrentHashMap <> ();
-    private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+    private final ConcurrentHashMap <BigInteger, Cart> cartsHM = new ConcurrentHashMap <> ();
+    private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
     public CartService() {
-        executor.scheduleAtFixedRate(()->deleteInactivity(), 0, 1, TimeUnit.MINUTES);
+        executor.scheduleAtFixedRate(()->deleteInactivity(), 0, 1, TimeUnit.SECONDS);
     }
 
     public void finishExecutor(){
@@ -25,7 +24,7 @@ public class CartService {
 
     public void deleteInactivity(){
         Instant now=Instant.now();
-        for(Cart cart : cartsHM.values()){
+        for(Cart cart : cartsHM.values()){//review all carts
             Instant last=cart.getLastUpdated();
             if(ChronoUnit.SECONDS.between(last, now)>10){
                 BigInteger idCart=cart.getID();
@@ -49,7 +48,7 @@ public class CartService {
             throw new Exception("Description can't be empty");
         }
         if(!this.existCart(cartID)){
-            return -1;
+            throw new Exception("Cart no exists");
         }
         Cart cart = cartsHM.get(cartID);
         int realQuantity=cart.addProduct(productName, quantity);
